@@ -1,0 +1,153 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Brute X - Crypto Wallet Finder</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background: #121212;
+            color: #fff;
+        }
+        header {
+            background: #1f1f1f;
+            padding: 20px;
+            text-align: center;
+        }
+        header h1 {
+            margin: 0;
+            font-size: 2.5em;
+            color: #e50914;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 20px;
+        }
+        .product-description {
+            text-align: center;
+            margin: 20px 0;
+        }
+        .product-description h2 {
+            font-size: 2em;
+        }
+        .options {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            flex-wrap: wrap;
+        }
+        .option {
+            background: #1f1f1f;
+            border: 2px solid #e50914;
+            border-radius: 8px;
+            padding: 20px;
+            text-align: center;
+            width: 300px;
+            transition: transform 0.3s ease;
+        }
+        .option:hover {
+            transform: scale(1.05);
+        }
+        .option h3 {
+            margin: 10px 0;
+        }
+        .option p {
+            font-size: 1.1em;
+        }
+        .price {
+            font-size: 1.5em;
+            margin: 15px 0;
+        }
+        .buy-now {
+            background: #e50914;
+            color: #fff;
+            border: none;
+            border-radius: 5px;
+            padding: 10px 20px;
+            font-size: 1.2em;
+            cursor: pointer;
+            transition: background 0.3s ease;
+            text-decoration: none;
+            display: inline-block;
+        }
+        .buy-now:hover {
+            background: #b50710;
+        }
+        footer {
+            text-align: center;
+            background: #1f1f1f;
+            padding: 10px;
+            margin-top: 20px;
+        }
+        footer p {
+            margin: 0;
+            font-size: 0.9em;
+            color: #ccc;
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1>Brute X</h1>
+        <p>Your Ultimate Crypto Wallet Finder</p>
+    </header>
+    <div class="container">
+        <div class="product-description">
+            <h2>Get Back What’s Yours</h2>
+            <p>Choose your plan and start recovering your crypto wallet now! Secure, fast, and reliable. Payment via Bitcoin only.</p>
+        </div>
+        <div class="options">
+            <!-- 1-Month Access -->
+            <div class="option">
+                <h3>1-Month Access</h3>
+                <p>Gain full access to Brute X for one month.</p>
+                <div class="price" id="price-month">$50</div>
+                <a id="buy-now-month" class="buy-now" target="_blank">Buy Now</a>
+            </div>
+            <!-- Permanent Access -->
+            <div class="option">
+                <h3>Permanent Access</h3>
+                <p>Lifetime access to Brute X. No limits, no worries.</p>
+                <div class="price" id="price-permanent">$200</div>
+                <a id="buy-now-permanent" class="buy-now" target="_blank">Buy Now</a>
+            </div>
+        </div>
+    </div>
+    <footer>
+        <p>© 2024 Brute X. All Rights Reserved. | Secure Payment via Bitcoin Only</p>
+    </footer>
+
+    <script>
+        const walletAddress = "bc1qaxmgjg2nhlqyr5tyqzqglmr48tshwa0j9vz8hz";
+
+        // Fetch real-time BTC to USD conversion rate
+        async function fetchBTCPrice() {
+            const response = await fetch("https://api.coingecko.com/api/v3/simple/price?ids=bitcoin&vs_currencies=usd");
+            const data = await response.json();
+            return data.bitcoin.usd;
+        }
+
+        async function updatePrices() {
+            const btcPriceInUSD = await fetchBTCPrice();
+
+            // Calculate Bitcoin amounts
+            const oneMonthBTC = (50 / btcPriceInUSD).toFixed(8);
+            const permanentBTC = (200 / btcPriceInUSD).toFixed(8);
+
+            // Update the "Buy Now" links and display
+            document.getElementById("buy-now-month").href = `bitcoin:${walletAddress}?amount=${oneMonthBTC}&label=BruteX%201-Month%20Access`;
+            document.getElementById("buy-now-permanent").href = `bitcoin:${walletAddress}?amount=${permanentBTC}&label=BruteX%20Permanent%20Access`;
+
+            document.getElementById("price-month").innerHTML = `$50 (~${oneMonthBTC} BTC)`;
+            document.getElementById("price-permanent").innerHTML = `$200 (~${permanentBTC} BTC)`;
+        }
+
+        // Update prices on page load
+        updatePrices();
+    </script>
+</body>
+</html>
